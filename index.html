@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numera — Modern Mathematical Toolkit</title>
+    <meta name="description" content="A fast, distraction-free precision math toolkit for roots, powers, Euclidean division, LCM, HCF, and prime factorization.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="brand-section">
+                <div class="brand-logo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                        <path d="M8 7h6"/>
+                        <path d="M11 11h3"/>
+                        <path d="M8 15h6"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">
+                        Numera
+                        <span class="brand-badge">Math Suite</span>
+                    </h1>
+                    <p class="brand-subtitle">Precision calculation & number theory toolkit</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="contactBtn" class="theme-toggle-btn" onclick="openContactModal()" aria-label="Contact Developer" title="Contact Developer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+                <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle Dark/Light Mode">
+                    <!-- Sun / Moon SVG dynamically loaded via JS -->
+                    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Tool Selection Tab Bar -->
+        <nav class="tool-nav-wrapper" aria-label="Tool selection">
+            <div class="tool-nav" role="tablist">
+                <button class="nav-tab active" role="tab" aria-selected="true" data-target="rootTool" id="tab-root">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 14.5h3l3.5 6.5L14 4h7"/>
+                    </svg>
+                    Nth Root
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" data-target="powerTool" id="tab-power">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14l5 6m0-6l-5 6"/>
+                        <path d="M15 5h4l-3 4h3"/>
+                    </svg>
+                    Power
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" data-target="quotientTool" id="tab-quotient">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" stroke-width="2.2"/>
+                        <circle cx="12" cy="6.5" r="1.5" fill="currentColor"/>
+                        <circle cx="12" cy="17.5" r="1.5" fill="currentColor"/>
+                    </svg>
+                    Division
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" data-target="lcmTool" id="tab-lcm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8" cy="12" r="5.5"/>
+                        <circle cx="16" cy="12" r="5.5"/>
+                        <path d="M8 12h8" stroke-dasharray="2 2"/>
+                    </svg>
+                    LCM
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" data-target="hcfTool" id="tab-hcf">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8.5" cy="12" r="6"/>
+                        <circle cx="15.5" cy="12" r="6"/>
+                        <path d="M12 7.8a6 6 0 0 1 0 8.4 6 6 0 0 1 0-8.4z" fill="currentColor" fill-opacity="0.3"/>
+                    </svg>
+                    GCD / HCF
+                </button>
+                <button class="nav-tab" role="tab" aria-selected="false" data-target="factorTool" id="tab-factor">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="2.5" fill="currentColor" fill-opacity="0.2"/>
+                        <line x1="10" y1="7" x2="6.5" y2="14.5"/>
+                        <line x1="14" y1="7" x2="17.5" y2="14.5"/>
+                        <circle cx="6" cy="17" r="2.5" fill="currentColor" fill-opacity="0.2"/>
+                        <circle cx="18" cy="17" r="2.5" fill="currentColor" fill-opacity="0.2"/>
+                    </svg>
+                    Factors
+                </button>
+            </div>
+        </nav>
+
+        <!-- TOOL 1: Root Calculation -->
+        <section id="rootTool" class="tool-card active" role="tabpanel" aria-labelledby="tab-root">
+            <div class="tool-card-header">
+                <h2 class="tool-card-title">Nth Root Calculation</h2>
+                <p class="tool-card-desc">Calculate the square root, cube root, or any nth root of a number.</p>
+            </div>
+
+            <div class="examples-bar">
+                <span class="example-label">Examples:</span>
+                <button type="button" class="example-chip" onclick="setExample('root', {num: 144, root: 2})">√144</button>
+                <button type="button" class="example-chip" onclick="setExample('root', {num: 125, root: 3})">∛125</button>
+                <button type="button" class="example-chip" onclick="setExample('root', {num: 1024, root: 10})">¹⁰√1024</button>
+            </div>
+
+            <div class="form-group">
+                <label for="rootNumber" class="form-label">Radicand (Number)</label>
+                <input type="number" id="rootNumber" placeholder="Enter number (e.g. 64)" step="any">
+            </div>
+
+            <div class="form-group">
+                <div class="form-label">
+                    <span>Root Degree (n)</span>
+                    <span class="slider-val-badge" id="rootValue">2</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" id="rootRange" min="2" max="10" value="2" oninput="updateRootValue(this.value)">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="calculateRoot()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Calculate
+                </button>
+                <button class="btn btn-secondary" onclick="clearRoot()">Clear</button>
+            </div>
+
+            <div id="rootResultBox" class="result-box">
+                <div class="result-header">
+                    <span class="result-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Calculated Result
+                    </span>
+                    <button class="btn-copy" onclick="copyResult('rootResultBox')" title="Copy to clipboard">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <div class="result-items-grid">
+                    <div class="result-item">
+                        <span class="result-item-label" id="rootResultLabel">Result</span>
+                        <div class="result-item-value" id="rootResultVal">-</div>
+                    </div>
+                </div>
+            </div>
+            <div id="rootErrorBox" class="error-box"></div>
+        </section>
+
+        <!-- TOOL 2: Power Calculation -->
+        <section id="powerTool" class="tool-card" role="tabpanel" aria-labelledby="tab-power">
+            <div class="tool-card-header">
+                <h2 class="tool-card-title">Power & Exponentiation</h2>
+                <p class="tool-card-desc">Calculate base raised to the power of any positive, negative, or decimal exponent.</p>
+            </div>
+
+            <div class="examples-bar">
+                <span class="example-label">Examples:</span>
+                <button type="button" class="example-chip" onclick="setExample('power', {base: 2, exp: 8})">2⁸</button>
+                <button type="button" class="example-chip" onclick="setExample('power', {base: 5, exp: -2})">5⁻²</button>
+                <button type="button" class="example-chip" onclick="setExample('power', {base: 9, exp: 0.5})">9^0.5</button>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="powerBase" class="form-label">Base (x)</label>
+                    <input type="number" id="powerBase" placeholder="e.g. 2" step="any">
+                </div>
+                <div class="form-group">
+                    <label for="powerExp" class="form-label">Exponent (y)</label>
+                    <input type="number" id="powerExp" placeholder="e.g. 8" step="any">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="calculatePower()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Calculate
+                </button>
+                <button class="btn btn-secondary" onclick="clearPower()">Clear</button>
+            </div>
+
+            <div id="powerResultBox" class="result-box">
+                <div class="result-header">
+                    <span class="result-badge">Result</span>
+                    <button class="btn-copy" onclick="copyResult('powerResultBox')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <div class="result-items-grid">
+                    <div class="result-item">
+                        <span class="result-item-label" id="powerResultLabel">xʸ</span>
+                        <div class="result-item-value" id="powerResultVal">-</div>
+                    </div>
+                </div>
+            </div>
+            <div id="powerErrorBox" class="error-box"></div>
+        </section>
+
+        <!-- TOOL 3: Quotient and Remainder -->
+        <section id="quotientTool" class="tool-card" role="tabpanel" aria-labelledby="tab-quotient">
+            <div class="tool-card-header">
+                <h2 class="tool-card-title">Euclidean Division</h2>
+                <p class="tool-card-desc">Find the integer quotient and remainder with the verified algebraic equation.</p>
+            </div>
+
+            <div class="examples-bar">
+                <span class="example-label">Examples:</span>
+                <button type="button" class="example-chip" onclick="setExample('quotient', {dividend: 29, divisor: 4})">29 ÷ 4</button>
+                <button type="button" class="example-chip" onclick="setExample('quotient', {dividend: 157, divisor: 12})">157 ÷ 12</button>
+                <button type="button" class="example-chip" onclick="setExample('quotient', {dividend: 1000, divisor: 33})">1000 ÷ 33</button>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dividend" class="form-label">Dividend (a)</label>
+                    <input type="number" id="dividend" placeholder="e.g. 29" step="any">
+                </div>
+                <div class="form-group">
+                    <label for="divisor" class="form-label">Divisor (b)</label>
+                    <input type="number" id="divisor" placeholder="e.g. 4" step="any">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="calculateQuotientAndRemainder()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Calculate
+                </button>
+                <button class="btn btn-secondary" onclick="clearQuotient()">Clear</button>
+            </div>
+
+            <div id="quotientResultBox" class="result-box">
+                <div class="result-header">
+                    <span class="result-badge">Division Result</span>
+                    <button class="btn-copy" onclick="copyResult('quotientResultBox')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <div class="result-items-grid">
+                    <div class="result-item">
+                        <span class="result-item-label">Quotient (q)</span>
+                        <div class="result-item-value" id="quotientVal">-</div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-item-label">Remainder (r)</span>
+                        <div class="result-item-value" id="remainderVal">-</div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-item-label">Equation Verification</span>
+                        <div class="result-item-detail" id="divisionFormulaVal">-</div>
+                    </div>
+                </div>
+            </div>
+            <div id="quotientErrorBox" class="error-box"></div>
+        </section>
+
+        <!-- TOOL 4: LCM Calculation -->
+        <section id="lcmTool" class="tool-card" role="tabpanel" aria-labelledby="tab-lcm">
+            <div class="tool-card-header">
+                <h2 class="tool-card-title">Least Common Multiple (LCM)</h2>
+                <p class="tool-card-desc">Compute the smallest positive integer that is divisible by all specified numbers.</p>
+            </div>
+
+            <div class="examples-bar">
+                <span class="example-label">Examples:</span>
+                <button type="button" class="example-chip" onclick="setExample('lcm', {val: '12, 18, 24'})">12, 18, 24</button>
+                <button type="button" class="example-chip" onclick="setExample('lcm', {val: '4, 6, 15, 20'})">4, 6, 15, 20</button>
+                <button type="button" class="example-chip" onclick="setExample('lcm', {val: '7, 13, 21'})">7, 13, 21</button>
+            </div>
+
+            <div class="form-group">
+                <label for="lcmRange" class="form-label">Numbers (separated by commas or spaces)</label>
+                <input type="text" id="lcmRange" placeholder="e.g. 12, 18, 24">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="calculateLCM()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Calculate LCM
+                </button>
+                <button class="btn btn-secondary" onclick="clearLCM()">Clear</button>
+            </div>
+
+            <div id="lcmResultBox" class="result-box">
+                <div class="result-header">
+                    <span class="result-badge">LCM Result</span>
+                    <button class="btn-copy" onclick="copyResult('lcmResultBox')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <div class="result-items-grid">
+                    <div class="result-item">
+                        <span class="result-item-label" id="lcmResultLabel">LCM</span>
+                        <div class="result-item-value" id="lcmResultVal">-</div>
+                    </div>
+                </div>
+            </div>
+            <div id="lcmErrorBox" class="error-box"></div>
+        </section>
+
+        <!-- TOOL 5: HCF / GCD Calculation -->
+        <section id="hcfTool" class="tool-card" role="tabpanel" aria-labelledby="tab-hcf">
+            <div class="tool-card-header">
+                <h2 class="tool-card-title">Highest Common Factor (HCF / GCD)</h2>
+                <p class="tool-card-desc">Find the largest positive integer that divides all of the numbers without a remainder.</p>
+            </div>
+
+            <div class="examples-bar">
+                <span class="example-label">Examples:</span>
+                <button type="button" class="example-chip" onclick="setExample('hcf', {val: '48, 72, 108'})">48, 72, 108</button>
+                <button type="button" class="example-chip" onclick="setExample('hcf', {val: '105, 140, 175'})">105, 140, 175</button>
+                <button type="button" class="example-chip" onclick="setExample('hcf', {val: '54, 24, 36'})">54, 24, 36</button>
+            </div>
+
+            <div class="form-group">
+                <label for="hcfRange" class="form-label">Numbers (separated by commas or spaces)</label>
+                <input type="text" id="hcfRange" placeholder="e.g. 48, 72, 108">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="calculateHCF()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Calculate HCF
+                </button>
+                <button class="btn btn-secondary" onclick="clearHCF()">Clear</button>
+            </div>
+
+            <div id="hcfResultBox" class="result-box">
+                <div class="result-header">
+                    <span class="result-badge">GCD / HCF Result</span>
+                    <button class="btn-copy" onclick="copyResult('hcfResultBox')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <div class="result-items-grid">
+                    <div class="result-item">
+                        <span class="result-item-label" id="hcfResultLabel">HCF / GCD</span>
+                        <div class="result-item-value" id="hcfResultVal">-</div>
+                    </div>
+                </div>
+            </div>
+            <div id="hcfErrorBox" class="error-box"></div>
+        </section>
+
+        <!-- TOOL 6: Factors & Prime Factorization -->
+        <section id="factorTool" class="tool-card" role="tabpanel" aria-labelledby="tab-factor">
+            <div class="tool-card-header">
+                <h2 class="tool-card-title">Factors & Prime Factorization</h2>
+                <p class="tool-card-desc">Compute all positive divisors and prime canonical decomposition of an integer.</p>
+            </div>
+
+            <div class="examples-bar">
+                <span class="example-label">Examples:</span>
+                <button type="button" class="example-chip" onclick="setExample('factor', {num: 360})">360</button>
+                <button type="button" class="example-chip" onclick="setExample('factor', {num: 1024})">1024</button>
+                <button type="button" class="example-chip" onclick="setExample('factor', {num: 840})">840</button>
+            </div>
+
+            <div class="form-group">
+                <label for="factorNumber" class="form-label">Positive Integer</label>
+                <input type="number" id="factorNumber" placeholder="e.g. 360" min="1" step="1">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="calculateFactorsAndPrimeFactors()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Calculate Factors
+                </button>
+                <button class="btn btn-secondary" onclick="clearFactors()">Clear</button>
+            </div>
+
+            <div id="factorResultBox" class="result-box">
+                <div class="result-header">
+                    <span class="result-badge">Factorization Breakdown</span>
+                    <button class="btn-copy" onclick="copyResult('factorResultBox')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+                <div class="result-items-grid">
+                    <div class="result-item">
+                        <span class="result-item-label">Prime Canonical Form</span>
+                        <div class="result-item-value" id="primeFactorExpVal">-</div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-item-label">Prime Factors</span>
+                        <div class="result-item-detail" id="primeFactorVal">-</div>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-item-label" id="factorCountLabel">All Divisors</span>
+                        <div class="result-item-detail" id="factorVal">-</div>
+                    </div>
+                </div>
+            </div>
+            <div id="factorErrorBox" class="error-box"></div>
+        </section>
+
+        <!-- Developer Contact Modal -->
+        <div id="contactModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+            <div class="modal-card">
+                <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="modal-header">
+                    <div class="dev-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3 id="modalTitle" class="modal-title">Get in Touch</h3>
+                    <p class="modal-desc">Have a question, feedback, or want to collaborate?</p>
+                </div>
+                <div class="contact-links-list">
+                    <a href="mailto:work.aadityakumar@gmail.com?subject=Numera%20Math%20Tools%20Feedback" class="contact-card-item">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <span class="contact-card-title">Email Developer</span>
+                            <span class="contact-card-sub">Direct support & inquiries</span>
+                        </div>
+                        <svg class="contact-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/AadityaGeek" target="_blank" rel="noopener noreferrer" class="contact-card-item">
+                        <div class="contact-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                        </div>
+                        <div class="contact-card-text">
+                            <span class="contact-card-title">GitHub Profile</span>
+                            <span class="contact-card-sub">Explore source code & repositories</span>
+                        </div>
+                        <svg class="contact-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Numera Toolkit • Built by <button type="button" class="contact-link-btn" onclick="openContactModal()">Aaditya</button></p>
+            <div class="kbd-hint">
+                <kbd>Enter</kbd> to calculate • <kbd>Tab</kbd> to navigate
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
