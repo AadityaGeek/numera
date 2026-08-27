@@ -15,16 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initTheme() {
     const themeToggleBtn = document.getElementById('themeToggleBtn');
-    const savedTheme = localStorage.getItem('numera_theme');
-    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const currentTheme = document.documentElement.getAttribute('data-theme') 
+        || localStorage.getItem('numera_theme') 
+        || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     
-    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-    applyTheme(initialTheme);
+    applyTheme(currentTheme);
 
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const activeTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = activeTheme === 'light' ? 'dark' : 'light';
             applyTheme(newTheme);
             localStorage.setItem('numera_theme', newTheme);
         });
