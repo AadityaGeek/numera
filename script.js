@@ -184,41 +184,10 @@ function formatSuperscript(num) {
     return String(num).split('').map(ch => superscripts[ch] || ch).join('');
 }
 
-function copyResult(resultBoxId) {
-    const box = document.getElementById(resultBoxId);
-    if (!box) return;
-    const copyBtn = box.querySelector('.btn-copy');
-
-    // Gather text from result items
-    const values = box.querySelectorAll('.result-item-value, .result-item-detail');
-    let textToCopy = '';
-    values.forEach(v => {
-        const text = v.innerText.trim();
-        if (text && text !== '-') {
-            textToCopy += (textToCopy ? ' | ' : '') + text;
-        }
-    });
-
-    if (!textToCopy) return;
-
-    navigator.clipboard.writeText(textToCopy).then(() => {
-        if (copyBtn) {
-            const originalContent = copyBtn.innerHTML;
-            copyBtn.innerHTML = `
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>Copied!</span>
-            `;
-            copyBtn.classList.add('copied');
-            setTimeout(() => {
-                copyBtn.innerHTML = originalContent;
-                copyBtn.classList.remove('copied');
-            }, 2000);
-        }
-    }).catch(() => {
-        console.error('Failed to copy to clipboard');
-    });
+function blurActiveInput() {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
 }
 
 function parseNumberList(str) {
@@ -276,6 +245,7 @@ function updateRootValue(value) {
 }
 
 function calculateRoot() {
+    blurActiveInput();
     hideError('rootErrorBox');
     const numVal = document.getElementById('rootNumber').value.trim();
     const rootVal = parseFloat(document.getElementById('rootRange').value);
@@ -331,6 +301,7 @@ function clearRoot() {
    ========================================================================== */
 
 function calculatePower() {
+    blurActiveInput();
     hideError('powerErrorBox');
     const baseVal = document.getElementById('powerBase').value.trim();
     const expVal = document.getElementById('powerExp').value.trim();
@@ -380,6 +351,7 @@ function clearPower() {
    ========================================================================== */
 
 function calculateQuotientAndRemainder() {
+    blurActiveInput();
     hideError('quotientErrorBox');
     const divVal = document.getElementById('dividend').value.trim();
     const divisorVal = document.getElementById('divisor').value.trim();
@@ -443,6 +415,7 @@ const lcmTwo = (a, b) => {
 };
 
 function calculateLCM() {
+    blurActiveInput();
     hideError('lcmErrorBox');
     const inputStr = document.getElementById('lcmRange').value.trim();
 
@@ -478,6 +451,7 @@ function clearLCM() {
    ========================================================================== */
 
 function calculateHCF() {
+    blurActiveInput();
     hideError('hcfErrorBox');
     const inputStr = document.getElementById('hcfRange').value.trim();
 
@@ -513,6 +487,7 @@ function clearHCF() {
    ========================================================================== */
 
 function calculateFactorsAndPrimeFactors() {
+    blurActiveInput();
     hideError('factorErrorBox');
     const val = document.getElementById('factorNumber').value.trim();
 

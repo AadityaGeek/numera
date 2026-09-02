@@ -43,7 +43,6 @@ A fast, distraction-free precision mathematical calculation suite designed with 
 - **Themes**: Seamless Light and Dark mode with persistence and system preference detection.
 - **Fast Tab Navigation**: Switch between calculation tools instantly with no page reloads.
 - **Instant Testing**: One-click "Try Example" chips for every tool.
-- **Copy to Clipboard**: One-click formatted result copying with temporary confirmation.
 - **Keyboard Friendly**: Press `Enter` to calculate immediately.
 - **Typography**: Paired with `Plus Jakarta Sans` for clean UI and `JetBrains Mono` for crisp mathematical precision.
 
